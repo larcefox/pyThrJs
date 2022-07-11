@@ -1,0 +1,17 @@
+{
+  "name": "pythr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "browserify": "^17.0.0",
+    "express": "^4.17.2",
+    "querystring": "^0.2.0",
+    "three-js": "^79.0.0"
+  }
+}
