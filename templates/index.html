@@ -1,8 +1,15 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
 {% block main %}
-        <div id="app"></div>
-        <script type="module">
-                {% include './include/visualisation.js' %}
-        </script>
+
+    <script type="module">
+            {% include './include/visualisation.js' %}
+    </script>
+
+    <div id="control">
+        <input id="refresh" class="btn btn-outline-primary" type="button" value="Refresh" />
+        <input id="get_cam_pos" class="btn btn-outline-primary" type="button" value="Get Camera position" />
+    </div>
+    <div id="app"></div>
+
 {% endblock %}

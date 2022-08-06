@@ -8,8 +8,8 @@ def send_data():
                 'material_type': 'MeshBasicMaterial',
                 'geometry_type': 'BoxGeometry',
                 'geometry':{
-                    'width': 1,
-                    'height': 5,
+                    'width': 5,
+                    'height': 1,
                     'depth': 1,
                 },
                 'material': {
@@ -31,9 +31,9 @@ def send_data():
                 'material_type': 'MeshBasicMaterial',
                 'geometry_type': 'BoxGeometry',
                 'geometry':{
-                    'width': 1,
+                    'width': 5,
                     'height': 1,
-                    'depth': 5,
+                    'depth': 1,
                 },
                 'material': {
                     'color': 0x00ff00,
@@ -98,11 +98,11 @@ def send_data():
                 'material_type': 'MeshBasicMaterial',
                 'geometry_type': 'PlaneGeometry',
                 'geometry':{
-                    'width': 10,
-                    'height': 10,
+                    'width': 100,
+                    'height': 100,
                 },
                 'material': {
-                    'color': 0xffffff,
+                    'texture' :'textures/blueprint.jpg',
                 },
                 'position':{
                     'x': 0,
@@ -110,7 +110,7 @@ def send_data():
                     'z': 0,
                     },
                 'rotation':{
-                    'x': -120,
+                    'x': -90,
                     'y': 0,
                     'z': 0,
                     },
