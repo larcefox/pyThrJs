@@ -83,15 +83,15 @@ const light2 = new THREE.DirectionalLight(
 light2.position.set(0, 0, -1)
 
 scene.add(light1, light2)
-camera.position.z = 20
-camera.position.y = 20
-camera.rotation.x = 20
+camera.position.z = 40
+camera.position.y = 40
+camera.rotation.x = -40
 
 function animate() {
      requestAnimationFrame(animate);
      //scene.getObjectByName( "Object1", true  ).rotation.x += 0.01;
-     scene.getObjectByName( "Object2", true  ).rotation.z += 0.01;
-    console.log(scene.getObjectByName("Object2").rotation.z)
+     //scene.getObjectByName( "Object2", true  ).rotation.z += 0.01;
+     //console.log(scene.getObjectByName("Object2").rotation.z)
      //scene.getObjectByName( "Object3", true  ).rotation.z += 0.01;
      renderer.render(scene, camera);
 }

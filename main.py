@@ -1,4 +1,4 @@
-#!/home/larce/projects/conote/env/bin/python
+#!/home/larce/projects/pythr/env/bin/python
 # -*- coding: utf-8 -*-
 """pythr.py: Visual modeling helper."""
 

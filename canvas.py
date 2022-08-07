@@ -1,31 +1,14 @@
 #!/usr/bin/python
 import json
+import math
+from domains.entity_class import Entity_fabric
 
+
+box = Entity_fabric.create('box', 1, 1, 5)
 
 def send_data():
     geometry = {
-            'Object1':{
-                'material_type': 'MeshBasicMaterial',
-                'geometry_type': 'BoxGeometry',
-                'geometry':{
-                    'width': 5,
-                    'height': 1,
-                    'depth': 1,
-                },
-                'material': {
-                    'color': 0xff00ff,
-                },
-                'position':{
-                    'x': 0,
-                    'y': 0,
-                    'z': 0,
-                    },
-                'rotation':{
-                    'x': 0,
-                    'y': 0,
-                    'z': 0,
-                    },
-            },
+            'Object1': box.return_dict(),
 
             'Object2':{
                 'material_type': 'MeshBasicMaterial',
@@ -98,19 +81,19 @@ def send_data():
                 'material_type': 'MeshBasicMaterial',
                 'geometry_type': 'PlaneGeometry',
                 'geometry':{
-                    'width': 100,
-                    'height': 100,
+                    'width': 10,
+                    'height': 10,
                 },
                 'material': {
                     'texture' :'textures/blueprint.jpg',
                 },
                 'position':{
                     'x': 0,
-                    'y': -5,
+                    'y': -10,
                     'z': 0,
                     },
                 'rotation':{
-                    'x': -90,
+                    'x': -(math.pi / 2),
                     'y': 0,
                     'z': 0,
                     },
