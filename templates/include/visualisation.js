@@ -67,10 +67,11 @@ function drawObjects(){
             console.log('it works')
         })
 }
-drawObjects();
-//LoadJsonData();
-
-document.getElementById("refresh").onclick = drawObjects
+//drawObjects();
+//this function works with jinja2  variable
+LoadObjects({{ data }})
+//document.getElementById("refresh").onclick = drawObjects
+document.getElementById("refresh").onclick = function () {LoadObjects({{ data }})}
 
 const light1 = new THREE.DirectionalLight(
     0xffffff, 1

@@ -12,7 +12,7 @@
 | 1.  | Make auth with flask                           |        |          |
 | 1.  | Fix lamber material                            |        |          |
 | 1.  | Check object counter                           |        |          |
-| 1.  |                                                |        |          |
+| 1.  | Create 404 page                                |        |          |
 | 1.  |                                                |        |          |
 | 1.  |                                                |        |          |
 | 1.  |                                                |        |          |

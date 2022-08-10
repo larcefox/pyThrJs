@@ -6,17 +6,30 @@ __copyright__ = "GPLv3"
 
 import abc
 
-class Entity(abc.ABC):
-    entity_counter = []
 
-    @abc.abstractmethod
-    def __init__(self) -> None:
-        self.entity_counter.append(self.__class__)
-        # super().__init__()
+class Entity_manager():
+
+    entity_list = set()
+
+    def counter(self, entity_class) -> None:
+        self.entity_list.add(entity_class)
+
+    def clear_counter(self):
+        self.entity_list.clear()
+        for i in self.entity_list: del i
+
+    @property
+    def get_entity_list(self):
+        return self.entity_list
+
+
+class Entity(abc.ABC, Entity_manager):
+    manager = Entity_manager()
 
     @abc.abstractmethod
     def return_dict(self):
         pass
+
 
 class Box(Entity):
     def __init__(
@@ -24,11 +37,13 @@ class Box(Entity):
             width: float,
             height: float,
             depth: float,
-            material: dict = {'color': 0xffffff},
+            color:dict = {'r': 0, 'g': 0, 'b': 0},
+            texture = None,
             position: dict = {'x': 0, 'y': 0, 'z': 0}, 
             rotation: dict = {'x': 0, 'y': 0, 'z': 0},
             material_type: str = 'MeshBasicMaterial'
             ) -> None:
+        self.counter(self)
         self.geometry_type = 'BoxGeometry'
         self.geometry = {
                 'width': width,
@@ -37,7 +52,7 @@ class Box(Entity):
                 } 
         self.position = position
         self.rotation = rotation
-        self.material = material
+        self.material = {'texture': texture} if texture else {'color': color}
         self.material_type = material_type
 
     def return_dict(self):
@@ -52,12 +67,15 @@ class Box(Entity):
                 }
         return entity_dict
 
+
 class Sphere(Entity):
     def __init__(
             self,
             radius: float,
             widthSegments: float,
             heightSegments: float,
+            color:dict = {'r': 0, 'g': 0, 'b': 0},
+            texture = None,
             material: dict = {'color': 0xffffff},
             position: dict = {'x': 0, 'y': 0, 'z': 0}, 
             rotation: dict = {'x': 0, 'y': 0, 'z': 0},
@@ -71,7 +89,7 @@ class Sphere(Entity):
                 } 
         self.position = position
         self.rotation = rotation
-        self.material = material
+        self.material = {'texture': texture} if texture else {'color': color}
         self.material_type = material_type
 
     def return_dict(self):
@@ -86,11 +104,14 @@ class Sphere(Entity):
                 }
         return entity_dict
 
+
 class Plane(Entity):
     def __init__(
             self,
             width: float,
             height: float,
+            color:dict = {'r': 0, 'g': 0, 'b': 0},
+            texture = None,
             material: dict = {'color': 0xffffff},
             position: dict = {'x': 0, 'y': 0, 'z': 0}, 
             rotation: dict = {'x': 0, 'y': 0, 'z': 0},
@@ -103,8 +124,9 @@ class Plane(Entity):
                 } 
         self.position = position
         self.rotation = rotation
-        self.material = material
+        self.material = {'texture': texture} if texture else {'color': color}
         self.material_type = material_type
+
 
     def return_dict(self):
         entity_dict = {
@@ -116,6 +138,7 @@ class Plane(Entity):
                 'rotation': self.rotation
                 }
         return entity_dict
+
 
 class Entity_fabric:
     @staticmethod
