@@ -9,10 +9,10 @@ import abc
 
 class Entity_manager():
 
-    entity_list = set()
+    entity_list = []
 
     def counter(self, entity_class) -> None:
-        self.entity_list.add(entity_class)
+        self.entity_list.append(entity_class)
 
     def clear_counter(self):
         self.entity_list.clear()
@@ -30,6 +30,11 @@ class Entity(abc.ABC, Entity_manager):
     def return_dict(self):
         pass
 
+    @property
+    def get_name(self):
+        entity_number = self.manager.get_entity_list.index(self)
+        return ''.join(('Object', str(entity_number)))
+
 
 class Box(Entity):
     def __init__(
@@ -37,7 +42,7 @@ class Box(Entity):
             width: float,
             height: float,
             depth: float,
-            color:dict = {'r': 0, 'g': 0, 'b': 0},
+            color:int = 0xffffff,
             texture = None,
             position: dict = {'x': 0, 'y': 0, 'z': 0}, 
             rotation: dict = {'x': 0, 'y': 0, 'z': 0},
@@ -74,13 +79,13 @@ class Sphere(Entity):
             radius: float,
             widthSegments: float,
             heightSegments: float,
-            color:dict = {'r': 0, 'g': 0, 'b': 0},
+            color:int = 0xffffff,
             texture = None,
-            material: dict = {'color': 0xffffff},
             position: dict = {'x': 0, 'y': 0, 'z': 0}, 
             rotation: dict = {'x': 0, 'y': 0, 'z': 0},
             material_type: str = 'MeshBasicMaterial'
             ) -> None:
+        self.counter(self)
         self.geometry_type = 'SphereGeometry'
         self.geometry = {
                 'radius': radius,
@@ -110,13 +115,13 @@ class Plane(Entity):
             self,
             width: float,
             height: float,
-            color:dict = {'r': 0, 'g': 0, 'b': 0},
+            color:int = 0xffffff,
             texture = None,
-            material: dict = {'color': 0xffffff},
             position: dict = {'x': 0, 'y': 0, 'z': 0}, 
             rotation: dict = {'x': 0, 'y': 0, 'z': 0},
             material_type: str = 'MeshBasicMaterial'
             ) -> None:
+        self.counter(self)
         self.geometry_type = 'PlaneGeometry'
         self.geometry = {
                 'width': width,

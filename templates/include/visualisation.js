@@ -19,19 +19,6 @@ document.getElementById("app").appendChild(renderer.domElement)
 new OrbitControls(camera, renderer.domElement)
 
 
-// function for downloading json
-const jsonData = 'data';
-async function LoadSource(source){
-    let url = 'http://10.8.0.2:9000/';
-    let response = await fetch(url + source);
-    if (response.ok) { // if HTTP-status is 200-299
-        let data = await response.json();
-        return data;
-    }else {
-        alert("HTTP-Error: " + response.status);
-    }
-};
-
 // create objects from json
 function LoadObjects(data){
     // draw all objects from source
@@ -59,18 +46,7 @@ function LoadObjects(data){
     console.log(scene);
 }
 
-function drawObjects(){
-    LoadSource(jsonData)
-        .then(data => {
-            scene.remove.apply(scene, scene.children)
-            LoadObjects(data)
-            console.log('it works')
-        })
-}
-//drawObjects();
-//this function works with jinja2  variable
 LoadObjects({{ data }})
-//document.getElementById("refresh").onclick = drawObjects
 document.getElementById("refresh").onclick = function () {LoadObjects({{ data }})}
 
 const light1 = new THREE.DirectionalLight(
