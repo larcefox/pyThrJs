@@ -19,11 +19,10 @@
 | 1.  | Use pastgresql in project                      |        |          |
 | 1.  | Use ORM                                        |        |          |
 | 1.  | Make camera class                              |        |          |
-| 1.  | Fix reload function                            |        |          |
+| 1.  | Fix reload function                            | +      | 13.08.22 |
 | 1.  | Draw lib scheme                                |        |          |
 | 1.  | Make light class                               |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
+| 1.  | API                                            |        |          |
 | 1.  |                                                |        |          |
 | 1.  |                                                |        |          |
 | 1.  |                                                |        |          |

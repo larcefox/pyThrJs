@@ -4,12 +4,20 @@ import {OrbitControls} from './js/OrbitControls.js';
 
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(
-        75,
-        innerWidth / innerHeight,
-        0.1,
-        1000
-    )
+const camera = new THREE.{{ camera.camera_type }}(
+    {{ camera.fild_of_view }},
+    {{ camera.aspect_ratio }},
+    {{ camera.clipping_plane_near }},
+    {{ camera.clipping_plane_far }}
+)
+
+camera.lookAt(new THREE.Vector3(0,0,0))
+
+camera.position.set(
+    {{ camera.position['x'] }},
+    {{ camera.position['y'] }},
+    {{ camera.position['z'] }}
+)
 
 const renderer = new THREE.WebGLRenderer()
 document.getElementById('control').width = 38
@@ -19,13 +27,15 @@ document.getElementById("app").appendChild(renderer.domElement)
 new OrbitControls(camera, renderer.domElement)
 
 
+
 // create objects from json
 function LoadObjects(data){
     // draw all objects from source
     for (const [key, value] of Object.entries(data)) {
         // draw color or texture
         if ('texture' in value.material){
-            var material = new THREE[value.material_type]({ map: new THREE.TextureLoader().load(value.material.texture) });
+            var material = 
+                new THREE[value.material_type]({ map: new THREE.TextureLoader().load(value.material.texture) });
         }else{
             var material = new THREE[value.material_type](value.material);
         }
@@ -47,31 +57,21 @@ function LoadObjects(data){
 }
 
 LoadObjects({{ data }})
-document.getElementById("refresh").onclick = function () {LoadObjects({{ data }})}
+animate()
 
-const light1 = new THREE.DirectionalLight(
-    0xffffff, 1
-)
-light1.position.set(0, 0, 1)
-
-const light2 = new THREE.DirectionalLight(
-    0xffffff, 1
-)
-light2.position.set(0, 0, -1)
-
-scene.add(light1, light2)
-camera.position.z = 40
-camera.position.y = 40
-camera.rotation.x = -40
+document.getElementById("refresh").onclick = function () {
+    scene.remove.apply(scene, scene.children)
+    LoadObjects({{ data }})
+    animate()
+}
 
 function animate() {
-     requestAnimationFrame(animate);
-     //scene.getObjectByName( "Object1", true  ).rotation.x += 0.01;
+     renderer.render(scene, camera);
+     scene.getObjectByName( "Object0", true  ).rotation.z += 0.01;
      //scene.getObjectByName( "Object2", true  ).rotation.z += 0.01;
      //console.log(scene.getObjectByName("Object2").rotation.z)
      //scene.getObjectByName( "Object3", true  ).rotation.z += 0.01;
-     renderer.render(scene, camera);
+     requestAnimationFrame(animate);
 }
 
-animate()
 

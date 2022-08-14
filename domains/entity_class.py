@@ -15,8 +15,8 @@ class Entity_manager():
         self.entity_list.append(entity_class)
 
     def clear_counter(self):
-        self.entity_list.clear()
         for i in self.entity_list: del i
+        self.entity_list.clear()
 
     @property
     def get_entity_list(self):
@@ -60,7 +60,7 @@ class Box(Entity):
         self.material = {'texture': texture} if texture else {'color': color}
         self.material_type = material_type
 
-    def return_dict(self):
+    def return_dict(self) -> dict:
         entity_dict = {
                 'material_type': self.material_type,
                 'geometry_type': self.geometry_type,
@@ -97,7 +97,7 @@ class Sphere(Entity):
         self.material = {'texture': texture} if texture else {'color': color}
         self.material_type = material_type
 
-    def return_dict(self):
+    def return_dict(self) -> dict:
         entity_dict = {
                 'material_type': self.material_type,
                 'geometry_type': self.geometry_type,
@@ -133,7 +133,7 @@ class Plane(Entity):
         self.material_type = material_type
 
 
-    def return_dict(self):
+    def return_dict(self) -> dict:
         entity_dict = {
                 'material_type': self.material_type,
                 'geometry_type': self.geometry_type,
@@ -145,6 +145,28 @@ class Plane(Entity):
         return entity_dict
 
 
+class Camera(Entity):
+    def __init__(
+            self, 
+            camera_type='PerspectiveCamera', 
+            fild_of_view=75, 
+            aspect_ratio='innerWidth / innerHeight',
+            clipping_plane_near=0.1,
+            clipping_plane_far=1000,
+            position: dict={'x': -40, 'y': 40, 'z': 40}
+            ) -> None:
+        self.camera_type = camera_type
+        self.fild_of_view = fild_of_view
+        self.aspect_ratio = aspect_ratio
+        self.clipping_plane_near = clipping_plane_near
+        self.clipping_plane_far = clipping_plane_far
+        self.position = position
+
+    def return_dict(self) -> dict:
+        return self.__dict__
+
+
+
 class Entity_fabric:
     @staticmethod
     def create(entity_type, *args, **kwargs):
@@ -154,6 +176,8 @@ class Entity_fabric:
             entity = Sphere(*args, **kwargs)
         elif entity_type == 'plane':
             entity = Plane(*args, **kwargs)
+        elif entity_type == 'camera':
+            entity = Camera(*args, **kwargs)
         else:
             entity = Box(*args, **kwargs)
 
