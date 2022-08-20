@@ -3,44 +3,44 @@
 | #   | Task                                           | Status | Date     |
 | --- | ---                                            | ---    | ---      |
 | 1.  | make entity classes                            | +      | 08.08.22 |
-| 1.  | turn on bootstrap                              | +      | 23.07.22 |
-| 1.  | add texture                                    | +      | 05.08.22 |
-| 1.  | Rewrite downloading image on external function | +      | 05.08.22 |
-| 1.  | Fix error in JsonData function                 | +      | 05.08.22 |
-| 1.  | Rewrite server for nginx                       |        |          |
-| 1.  | Fix color in classes                           | +      | 10.08.22 |
-| 1.  | Make auth with flask                           |        |          |
-| 1.  | Fix lamber material                            |        |          |
-| 1.  | Check object counter                           | +      | 10.08.22 |
-| 1.  | Create 404 page                                |        |          |
-| 1.  | Import layout lib                              |        |          |
-| 1.  | Make new branch                                |        |          |
-| 1.  | Rewrite for jinja2 variable                    |        |          |
-| 1.  | Use pastgresql in project                      |        |          |
-| 1.  | Use ORM                                        |        |          |
-| 1.  | Make camera class                              |        |          |
-| 1.  | Fix reload function                            | +      | 13.08.22 |
-| 1.  | Draw lib scheme                                |        |          |
-| 1.  | Make light class                               |        |          |
-| 1.  | API                                            |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
-| 1.  |                                                |        |          |
+| 2.  | turn on bootstrap                              | +      | 23.07.22 |
+| 3.  | add texture                                    | +      | 05.08.22 |
+| 4.  | Rewrite downloading image on external function | +      | 05.08.22 |
+| 5.  | Fix error in JsonData function                 | +      | 05.08.22 |
+| 6.  | Rewrite server for nginx                       |        |          |
+| 7.  | Fix color in classes                           | +      | 10.08.22 |
+| 8.  | Make auth with flask                           |        |          |
+| 9.  | Fix lamber material                            |        |          |
+| 10. | Check object counter                           | +      | 10.08.22 |
+| 11. | Create 404 page                                |        |          |
+| 12. | Import layout lib                              |        |          |
+| 13. | Make new branch                                |        |          |
+| 14. | Rewrite for jinja2 variable                    |        |          |
+| 15. | Use pastgresql in project                      |        |          |
+| 16. | Use ORM                                        |        |          |
+| 17. | Make camera class                              |        |          |
+| 18. | Fix reload function                            | +      | 13.08.22 |
+| 19. | Draw lib scheme                                |        |          |
+| 20. | Make light class                               |        |          |
+| 21. | API                                            |        |          |
+| 22. | Rewrite js for classes                         |        |          |
+| 23. |                                                |        |          |
+| 24. |                                                |        |          |
+| 25. |                                                |        |          |
+| 26. |                                                |        |          |
+| 27. |                                                |        |          |
+| 28. |                                                |        |          |
+| 29. |                                                |        |          |
+| 30. |                                                |        |          |
+| 31. |                                                |        |          |
+| 32. |                                                |        |          |
+| 33. |                                                |        |          |
+| 34. |                                                |        |          |
+| 35. |                                                |        |          |
+| 36. |                                                |        |          |
+| 37. |                                                |        |          |
+| 38. |                                                |        |          |
+| 39. |                                                |        |          |
+| 40. |                                                |        |          |
 
 

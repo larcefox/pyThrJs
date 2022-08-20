@@ -3,6 +3,16 @@ import * as THREE from './js/three.js';
 import {OrbitControls} from './js/OrbitControls.js';
 
 
+const loader = new THREE.CubeTextureLoader();
+    const texture = loader.load([
+        './textures/skybox/posx.jpg',
+        './textures/skybox/negx.jpg',
+        './textures/skybox/posy.jpg',
+        './textures/skybox/negy.jpg',
+        './textures/skybox/posz.jpg',
+        './textures/skybox/negz.jpg',
+    ])
+
 const scene = new THREE.Scene();
 const camera = new THREE.{{ camera.camera_type }}(
     {{ camera.fild_of_view }},
@@ -10,6 +20,8 @@ const camera = new THREE.{{ camera.camera_type }}(
     {{ camera.clipping_plane_near }},
     {{ camera.clipping_plane_far }}
 )
+
+scene.background = texture
 
 camera.lookAt(new THREE.Vector3(0,0,0))
 

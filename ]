@@ -13,33 +13,38 @@ class Entity_manager():
     camera_list = []
     light_list = []
 
-    def entity_list_append(self, entity_class, entity_type) -> None:
-        if entity_type == 'shape':
-            self.entity_list.append(entity_class)
-        elif entity_type == 'camera':
-            self.camera_list.append(entity_class)
-        elif entity_type == 'light':
-            self.light_list.append(entity_class)
+    def entity_list_append(self, entity_class) -> None:
+        self.entity_list.append(entity_class)
 
     def clear_entity_list(self) -> None:
         for i in self.entity_list: del i
         self.entity_list.clear()
 
-        for i in self.camera_list: del i
-        self.camera_list.clear()
+    @property
+    def get_entity_list(self) -> list:
+        return self.entity_list
 
-        for i in self.light_list: del i
-        self.light_list.clear()
+    def camera_list_append(self, entity_class) -> None:
+        self.entity_list.append(entity_class)
 
-    def get_entity_list(self, entity_type):
-        if entity_type == 'shape':
-            return self.entity_list
-        elif entity_type == 'camera':
-            return self.camera_list
-        elif entity_type == 'light':
-            return self.light_list
-        else:
-            return self.entity_list
+    def clear_camera_list(self) -> None:
+        for i in self.entity_list: del i
+        self.entity_list.clear()
+
+    @property
+    def get_camera_list(self) -> list:
+        return self.entity_list
+
+    def light_list_append(self, entity_class) -> None:
+        self.entity_list.append(entity_class)
+
+    def clear_light_list(self) -> None:
+        for i in self.entity_list: del i
+        self.entity_list.clear()
+
+    @property
+    def get_light_list(self) -> list:
+        return self.entity_list
 
 
 class Entity(abc.ABC, Entity_manager):
@@ -49,16 +54,10 @@ class Entity(abc.ABC, Entity_manager):
     def return_dict(self):
         pass
 
-    def get_name(self, entity_type):
-        entity_number = self.manager.get_entity_list(entity_type).index(self)
-        if entity_type == 'shape':
-            return ''.join(('Shape', str(entity_number)))
-        elif entity_type == 'camera':
-            return  ''.join(('Camera', str(entity_number)))
-        elif entity_type == 'light':
-            return  ''.join(('light', str(entity_number)))
-        else:
-            return 'NaN'
+    @property
+    def get_name(self):
+        entity_number = self.manager.get_entity_list.index(self)
+        return ''.join(('Object', str(entity_number)))
 
 
 class Box(Entity):
@@ -67,7 +66,6 @@ class Box(Entity):
             width: float,
             height: float,
             depth: float,
-            name: str = 'Entity',
             color:int = 0xffffff,
             texture = None,
             position: dict = {'x': 0, 'y': 0, 'z': 0}, 
@@ -76,13 +74,13 @@ class Box(Entity):
             cast_shadow = True,
             receive_shadow = True
             ) -> None:
+        self.entity_list_append(self)
         self.geometry_type = 'BoxGeometry'
         self.geometry = {
                 'width': width,
                 'height': height,
                 'depth': depth
                 } 
-        self.name = name
         self.position = position
         self.rotation = rotation
         self.material = {'texture': texture} if texture else {'color': color}
@@ -111,7 +109,6 @@ class Sphere(Entity):
             radius: float,
             widthSegments: float,
             heightSegments: float,
-            name: str = 'Entity',
             color:int = 0xffffff,
             texture = None,
             position: dict = {'x': 0, 'y': 0, 'z': 0}, 
@@ -120,7 +117,7 @@ class Sphere(Entity):
             cast_shadow = True,
             receive_shadow = True
             ) -> None:
-        self.name = name
+        self.entity_list_append(self)
         self.geometry_type = 'SphereGeometry'
         self.geometry = {
                 'radius': radius,
@@ -154,7 +151,6 @@ class Plane(Entity):
             self,
             width: float,
             height: float,
-            name: str = 'Entity',
             color:int = 0xffffff,
             texture = None,
             position: dict = {'x': 0, 'y': 0, 'z': 0}, 
@@ -163,12 +159,12 @@ class Plane(Entity):
             cast_shadow = False,
             receive_shadow = True
             ) -> None:
+        self.entity_list_append(self)
         self.geometry_type = 'PlaneGeometry'
         self.geometry = {
                 'width': width,
                 'height': height
                 } 
-        self.name = name
         self.position = position
         self.rotation = rotation
         self.material = {'texture': texture} if texture else {'color': color}
@@ -194,7 +190,6 @@ class Plane(Entity):
 class Camera(Entity):
     def __init__(
             self, 
-            name: str = 'Entity',
             camera_type: str='PerspectiveCamera', 
             fild_of_view: int=75, 
             aspect_ratio: str='innerWidth / innerHeight',
@@ -202,7 +197,6 @@ class Camera(Entity):
             clipping_plane_far: float=1000,
             position: dict={'x': -40, 'y': 40, 'z': 40}
             ) -> None:
-        self.name = name
         self.camera_type = camera_type
         self.fild_of_view = fild_of_view
         self.aspect_ratio = aspect_ratio
@@ -217,7 +211,6 @@ class Camera(Entity):
 class Light(Entity):
     def __init__(
             self, 
-            name: str = 'Entity',
             light_type: str='DirectionalLight',
             color: int=0xffffff,
             intensity: float=1.0,
@@ -236,7 +229,6 @@ class Light(Entity):
             position: dict={'x': 20, 'y': 100, 'z': 10},
             cast_shadow = True,
             ) -> None:
-        self.name = name
         self.color = color
         self.intensity = intensity
         self.light_type = light_type
@@ -254,32 +246,30 @@ class Entity_fabric:
     def create(entity_type, *args, **kwargs):
         if entity_type == 'box':
             entity = Box(*args, **kwargs)
-            entity.entity_list_append(entity, entity_type) 
-            entity.entity_list_append(entity, 'shape')
-            entity.name = entity.get_name('shape')
         elif entity_type == 'sphere':
             entity = Sphere(*args, **kwargs)
-            entity.entity_list_append(entity, entity_type) 
-            entity.entity_list_append(entity, 'shape')
-            entity.name = entity.get_name('shape')
         elif entity_type == 'plane':
             entity = Plane(*args, **kwargs)
-            entity.entity_list_append(entity, entity_type) 
-            entity.entity_list_append(entity, 'shape')
-            entity.name = entity.get_name('shape')
         elif entity_type == 'camera':
             entity = Camera(*args, **kwargs)
-            entity.entity_list_append(entity, entity_type) 
-            entity.name = entity.get_name(entity_type)
-        elif entity_type == 'light':
-            entity = Camera(*args, **kwargs)
-            entity.entity_list_append(entity, entity_type) 
-            entity.name = entity.get_name(entity_type)
         else:
             entity = Box(*args, **kwargs)
-            entity.entity_list_append(entity, entity_type) 
-            entity.entity_list_append(entity, 'shape')
-            entity.name = entity.get_name('shape')
 
         return entity
 
+
+class Light_fabric:
+    @staticmethod
+    def create(entity_type, *args, **kwargs):
+        if entity_type == 'box':
+            entity = Box(*args, **kwargs)
+        elif entity_type == 'sphere':
+            entity = Sphere(*args, **kwargs)
+        elif entity_type == 'plane':
+            entity = Plane(*args, **kwargs)
+        elif entity_type == 'camera':
+            entity = Camera(*args, **kwargs)
+        else:
+            entity = Box(*args, **kwargs)
+
+        return entity
