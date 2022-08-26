@@ -16,6 +16,7 @@ class Warehouse{
     this._threejs.setPixelRatio(window.devicePixelRatio);
 
     document.getElementById('control').width = 38
+    console.log(document.getElementById('control'))
     this._threejs.setSize(innerWidth, innerHeight - document.getElementById('control').width);
 
     document.getElementById("app").appendChild(this._threejs.domElement);
@@ -38,23 +39,6 @@ class Warehouse{
       );
 
 
-    let light = new THREE.DirectionalLight(0xFFFFFF, 1.0);
-    light.position.set(20, 100, 10);
-    light.target.position.set(0, 0, 0);
-    light.castShadow = true;
-    light.shadow.bias = -0.001;
-    light.shadow.mapSize.width = 2048;
-    light.shadow.mapSize.height = 2048;
-    light.shadow.camera.near = 0.5;
-    light.shadow.camera.far = 500.0;
-    light.shadow.camera.left = 100;
-    light.shadow.camera.right = -100;
-    light.shadow.camera.top = 100;
-    light.shadow.camera.bottom = -100;
-    this._scene.add(light);
-
-    light = new THREE.AmbientLight(0x101010);
-    this._scene.add(light);
 
     const controls = new OrbitControls(
       this._camera, this._threejs.domElement);
@@ -63,12 +47,12 @@ class Warehouse{
 
     const loader = new THREE.CubeTextureLoader();
     const textur = loader.load([
-        './textures/skybox/posx.jpg',
-        './textures/skybox/negx.jpg',
-        './textures/skybox/posy.jpg',
-        './textures/skybox/negy.jpg',
-        './textures/skybox/posz.jpg',
-        './textures/skybox/negz.jpg',
+        '{{ url_for('static', filename='textures/skybox/posx.jpg') }}',
+        '{{ url_for('static', filename='textures/skybox/negx.jpg') }}',
+        '{{ url_for('static', filename='textures/skybox/posy.jpg') }}',
+        '{{ url_for('static', filename='textures/skybox/negy.jpg') }}',
+        '{{ url_for('static', filename='textures/skybox/posz.jpg') }}',
+        '{{ url_for('static', filename='textures/skybox/negz.jpg') }}'
     ]);
 
     this._scene.background = textur;
@@ -83,20 +67,57 @@ class Warehouse{
     box.receiveShadow = true;
     this._scene.add(box);
 
-    this._LoadObjects({{ data }})
+    this._LoadLight( {{ light }} )
+    this._LoadEntity({{ entity }})
     this._RAF();
   }
 
-     //create objects from json
-    _LoadObjects(data) {
-         //draw all objects from source
+     //create light from json
+    _LoadLight(data) {
+         //draw all shapes from source
+        for (const [key, value] of Object.entries(data)) {
+            console.log(value)
+            const light = new THREE[value.light_type](
+                value.color, 
+                value.intencity
+            ); 
+            light.name = key;
+
+            if (value.light_type == 'DirectionalLight') {
+                light.position.set(...Object.values(value.position));
+                light.target.position.set(...Object.values(value.target_position));
+                light.castShadow = value.castShadow;
+                
+
+                light.shadow.bias = light.shadow.bias;
+                light.shadow.mapSize = light.shadow.mapSize;
+                light.shadow.bias = value.shadow.bias;
+                light.shadow.mapSize.width = value.shadow.mapSize.width;
+                light.shadow.mapSize.height = value.shadow.mapSize.height;
+                light.shadow.camera.near = value.shadow.camera.near;
+                light.shadow.camera.far = value.shadow.camera.far;
+                light.shadow.camera.left = value.shadow.camera.left;
+                light.shadow.camera.right = value.shadow.camera.right;
+                light.shadow.camera.top = value.shadow.camera.top;
+                light.shadow.camera.bottom = value.shadow.camera.bottom;
+
+                this._scene.add(light);
+            }else if (value.light_type == 'AmbientLight'){
+                this._scene.add(light);
+            }
+        }
+    }
+     //create shapes from json
+    _LoadEntity(data) {
+         //draw all shapes from source
         for (const [key, value] of Object.entries(data)) {
              //draw color or texture
+            let material;
             if ('texture' in value.material){
-                var material = 
-                    new THREE[value.material_type]({ map: new THREE.TextureLoader().load(value.material.texture) });
+                material = 
+                    new THREE[value.material_type]({ map: new THREE.TextureLoader().load('{{ url_for('static', filename='textures/blueprint.jpg') }}') });
             }else{
-                var material = new THREE[value.material_type](value.material);
+                material = new THREE[value.material_type](value.material);
             }
 
             const figure = new THREE[value.geometry_type](...Object.values(value.geometry));
@@ -111,7 +132,6 @@ class Warehouse{
 
              //add mesh rotation
             mesh.rotation.set(...Object.values(value.rotation));
-            console.log(value.castShadow)
         }
         console.log(this._scene);
     }

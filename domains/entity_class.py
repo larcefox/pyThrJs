@@ -223,15 +223,16 @@ class Light(Entity):
             intensity: float=1.0,
             shadow: dict={
                 'bias': -0.001,
-                'map_size_width': 2048,
-                'map_size_height': 2048,
-                'camere_near': 0.5,
-                'camera_far': 500,
-                'camera_left': 100,
-                'camera_right': -100,
-                'camera_top': 100,
-                'camera_bottom': -100
-                },
+                'mapSize': {'width': 2048, 'height': 2048},
+                'camera': {
+                    'near': 0.5, 
+                    'far': 500, 
+                    'left': 100, 
+                    'right': -100,
+                    'top': 100,
+                    'bottom': -100
+                }
+            },
             target_position: dict={'x': 20, 'y': 100, 'z': 10},
             position: dict={'x': 20, 'y': 100, 'z': 10},
             cast_shadow = True,
@@ -246,38 +247,37 @@ class Light(Entity):
         self.cast_shadow = cast_shadow
 
     def return_dict(self) -> dict:
-        return self.__dict__
+        entity_dict = {
+                'name': self.name,
+                'color': self.color,
+                'intensity': self.intensity,
+                'light_type': self.light_type,
+                'position': self.position,
+                'target_position': self.target_position,
+                'shadow': self.shadow,
+                'castShadow': self.cast_shadow
+                }
+        return entity_dict
 
 
 class Entity_fabric:
     @staticmethod
     def create(entity_type, *args, **kwargs):
-        if entity_type == 'box':
-            entity = Box(*args, **kwargs)
-            entity.entity_list_append(entity, entity_type) 
-            entity.entity_list_append(entity, 'shape')
-            entity.name = entity.get_name('shape')
-        elif entity_type == 'sphere':
-            entity = Sphere(*args, **kwargs)
-            entity.entity_list_append(entity, entity_type) 
-            entity.entity_list_append(entity, 'shape')
-            entity.name = entity.get_name('shape')
-        elif entity_type == 'plane':
-            entity = Plane(*args, **kwargs)
-            entity.entity_list_append(entity, entity_type) 
-            entity.entity_list_append(entity, 'shape')
+        shape_dict = {'box': Box, 'sphere': Sphere, 'plane': Plane}
+        if entity_type in shape_dict:
+            entity = shape_dict[entity_type](*args, **kwargs)
+            entity.entity_list_append(entity, 'shape') 
             entity.name = entity.get_name('shape')
         elif entity_type == 'camera':
             entity = Camera(*args, **kwargs)
             entity.entity_list_append(entity, entity_type) 
             entity.name = entity.get_name(entity_type)
         elif entity_type == 'light':
-            entity = Camera(*args, **kwargs)
+            entity = Light(*args, **kwargs)
             entity.entity_list_append(entity, entity_type) 
             entity.name = entity.get_name(entity_type)
         else:
             entity = Box(*args, **kwargs)
-            entity.entity_list_append(entity, entity_type) 
             entity.entity_list_append(entity, 'shape')
             entity.name = entity.get_name('shape')
 
