@@ -4,11 +4,26 @@ import math
 import random
 from domains.entity_class import Entity_fabric
 from domains.entity_class import Entity
+from bsp_maker import rects_calculate
 
 
 directional_light = Entity_fabric.create('light')
 ambient_light = Entity_fabric.create('light', light_type='AmbientLight')
 
+rects = rects_calculate()
+for rect in rects:
+    Entity_fabric.create(
+            'plane',
+            rect['dx'],
+            rect['dy'],
+            texture='textures/blueprint.jpg',
+            color=0xffffff,
+            position={'x':rect['x'] + rect['dx']/2, 'z':(rect['dx'] * rect['dy'])/100, 'y':rect['y'] + rect['dy']/2},
+            rotation={'x': -(math.pi/2),'y': 0 , 'z': 0}
+            )
+
+'''
+# Exampls for drawing sinpl objects
 plane = Entity_fabric.create(
         'plane',
         100, 
@@ -29,16 +44,17 @@ for i in list(range(1, 2)):
             color=0xff0000
             )
 
-# for x in list(range(-9, 8)):
-    # for y in list(range(-9, 8)):
-        # Entity_fabric.create(
-                # 'box', 1, 1, 2, 
-                # position={
-                    # 'x': random.random() + x * 4, 
-                    # 'y': random.random() * 4 + 2, 
-                    # 'z': random.random() + y * 5
-                    # }, 
-                # color=0x80807f)
+for x in list(range(-9, 8)):
+    for y in list(range(-9, 8)):
+        Entity_fabric.create(
+                'box', 1, 1, 2, 
+                position={
+                    'x': random.random() + x * 4, 
+                    'y': random.random() * 4 + 2, 
+                    'z': random.random() + y * 5
+                    }, 
+                color=0x80807f)
+'''
 
 def send_data():
     # TODO rewrite for loop creation
