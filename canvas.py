@@ -1,24 +1,32 @@
 #!/usr/bin/python
 import json
 import math
-import random
 from domains.entity_class import Entity_fabric
 from domains.entity_class import Entity
-from bsp_maker import rects_calculate
+from swan_generator import generate_swan 
 
 
 directional_light = Entity_fabric.create('light')
 ambient_light = Entity_fabric.create('light', light_type='AmbientLight')
 
-rects = rects_calculate()
-for rect in rects:
+rects = generate_swan() 
+for num, rect in enumerate(rects):
+    print(rect)
+
+    Entity_fabric.create(
+            'box', 10, 10, 10, 
+            position={'x': rect['x'], 'y': num * 10, 'z': rect['y']}, 
+            rotation={'x': 0, 'y': 0, 'z': 0}, 
+            color=0xff0000
+            )
+
     Entity_fabric.create(
             'plane',
             rect['dx'],
             rect['dy'],
             texture='textures/blueprint.jpg',
             color=0xffffff,
-            position={'x':rect['x'] + rect['dx']/2, 'z':(rect['dx'] * rect['dy'])/100, 'y':rect['y'] + rect['dy']/2},
+            position={'x':rect['x'] + rect['dx']/2, 'z': num * 10, 'y':rect['y'] + rect['dy']/2},
             rotation={'x': -(math.pi/2),'y': 0 , 'z': 0}
             )
 
@@ -67,8 +75,6 @@ def send_data():
             entity.name:
             entity.return_dict() for entity in Entity.manager.get_entity_list('shape')
             }
-    print(lights)
-    print(geometries)
     return {
             'camera': camera.return_dict(), 
             'lights': json.dumps(lights),
