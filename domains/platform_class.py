@@ -1,9 +1,10 @@
-from urllib.parse import urlparse
-from bs4 import BeautifulSoup, element
 import requests
-
+from urllib.parse import urlparse
+from bs4 import BeautifulSoup as bs
 
 class Platform_manager:
+    '''Class fore save objects in list
+    it mixed in Platform and can be call from Platform.manager'''
     platform_list = []
 
     def platform_list_append(self, platform_class):
@@ -17,76 +18,57 @@ class Platform_manager:
 
 
 class Platform(Platform_manager):
-
+    '''Main platfor class'''
     manager = Platform_manager()
 
-    def __init__(self, page:str) -> None:
-        self.page = page
-        self.platform = get_platform(self.page)
+    def __init__(self, url:str):
+        self.url = url 
+        response = requests.get(self.url)
+        self.soup = bs(response.content, 'html.parser')
+        self.hash = self.soup.html.__hash__()
+
+    def links(self):
+        a_tags = self.soup.find_all('a') 
+        links = []
+        for tag in a_tags:
+            if urlparse(tag['href']).scheme:
+                links.append(tag['href'])
+        return links
+
+    def inner_links(self):
+        return list(
+                filter(lambda link: urlparse(self.url).netloc in urlparse(link).netloc, self.links())
+                )
+
+    def outer_links(self):
+        return list(
+                filter(lambda link: urlparse(self.url).netloc not in urlparse(link).netloc, self.links())
+                )
 
     @property
-    def get_inner_links(self):
-        inner_links = set() 
-        for link in self.platform['links']:
-            if urlparse(self.page).netloc in urlparse(link).netloc:
-                if urlparse(link).scheme:
-                    inner_links.add(link)
-        return tuple(inner_links)
+    def size(self):
+        size_max_value = 100000
+        real_x = len(tuple(self.soup.html.descendants))
+        real_y = len(self.soup.html.text.splitlines())
+        return (real_x if real_x < size_max_value else size_max_value,
+                real_y if real_y < size_max_value else size_max_value)
 
-    @property
-    def get_outer_links(self):
-        outer_links = set() 
-        for link in self.platform['links']:
-            if urlparse(self.page).netloc not in urlparse(link).netloc:
-                if urlparse(link).scheme:
-                    outer_links.add(link)
-        return tuple(outer_links)
-
-    @property
-    def get_size(self):
-        return self.platform['size']
-
-    @property
-    def get_level(self):
-        return len(urlparse(self.page).path.split('/'))
-
-    def generate_inner_childs(self):
-        for link in self.get_inner_links:
+    def generate_platforms(self):
+        for link in self.links():
             Platform_fabric.create(link)
-
-    def generate_outer_childs(self):
-        for link in self.get_outer_links:
-            Platform_fabric.create(link)
+        return self.manager.get_platform_list()
 
 
 class Platform_fabric:
+    '''Class for creation platforms'''
     @staticmethod
-    def create(page):
-        platform = Platform(page)
+    def create(url):
+        platform = Platform(url)
         platform.platform_list_append(platform)
         return platform
 
 
-#TODO remove this function from class file to lib folder
-def get_platform(start_page):
-
-    response = requests.get(start_page)
-    soup = BeautifulSoup(response.content, 'html.parser')
-    size_multiplyer = 10
-    body_size = []
-    links = []
-
-    for tag in soup.descendants:
-        if isinstance(tag, element.Tag):
-            
-            if tag.name == 'body': body_size = (
-                    max([len(i) for i in tag.text.splitlines()]) / size_multiplyer, 
-                    len(tag.text.splitlines()) / size_multiplyer 
-                    )
-            if tag.has_attr('href'): links.append(tag['href'])
-
-    return {'size': body_size, 'links': links}
 
 if __name__ == '__main__':
-    platform_obj = Platform('http://mail.ru')
-    print(platform_obj.get_inner_links)
+    platgorm = Platform_fabric.create('http://mail.ru')
+    print(platgorm.size())

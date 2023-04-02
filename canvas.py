@@ -3,35 +3,34 @@ import json
 import math
 from domains.entity_class import Entity_fabric
 from domains.entity_class import Entity
-from swan_generator import generate_swan 
+from domains.hive_class import Hive
 
+
+hive = Hive('http://docs.python.org/')
+rects = hive.calc_hive()
 
 directional_light = Entity_fabric.create('light')
 ambient_light = Entity_fabric.create('light', light_type='AmbientLight')
 
-rects = generate_swan() 
-for num, rect in enumerate(rects):
-    print(rect)
-
+for rect in rects:
     Entity_fabric.create(
-            'box', 10, 10, 10, 
-            position={'x': rect['x'], 'y': num * 10, 'z': rect['y']}, 
+            'box', 1, 1, 1, 
+            position={'x': rects[rect]['x'], 'y': rects[rect]['z'], 'z': rects[rect]['y']},
             rotation={'x': 0, 'y': 0, 'z': 0}, 
             color=0xff0000
             )
 
     Entity_fabric.create(
             'plane',
-            rect['dx'],
-            rect['dy'],
+            rects[rect]['dx'],
+            rects[rect]['dy'],
             texture='textures/blueprint.jpg',
             color=0xffffff,
-            position={'x':rect['x'] + rect['dx']/2, 'z': num * 10, 'y':rect['y'] + rect['dy']/2},
+            position={'x': rects[rect]['x'], 'y': rects[rect]['z'], 'z': rects[rect]['y']},
             rotation={'x': -(math.pi/2),'y': 0 , 'z': 0}
             )
-
 '''
-# Exampls for drawing sinpl objects
+# Exampls for drawing simpl objects
 plane = Entity_fabric.create(
         'plane',
         100, 
